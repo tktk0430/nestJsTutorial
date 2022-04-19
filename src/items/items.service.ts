@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { Item } from './item.model';
 import { v4 as uuid } from 'uuid';
@@ -11,6 +11,9 @@ export class ItemsService {
 
   findById(id: string): Item {
     const item = this.items.find((i) => i.id === id);
+    if (!item) {
+      throw new NotFoundException();
+    }
     return item;
   }
 
