@@ -3,5 +3,7 @@ export interface Item {
   name: string;
   price: number;
   description: string;
-  status: 'ON_SALE' | 'SOLD_OUT';
+  status: TItemStatus;
 }
+
+export type TItemStatus = 'ON_SALE' | 'SOLD_OUT';
