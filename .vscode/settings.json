@@ -17,7 +17,6 @@
     "editor.rulers": [
         80
     ],
-    "editor.wordWrap": "on",
     "eslint.packageManager": "npm",
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
