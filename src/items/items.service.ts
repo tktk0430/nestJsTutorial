@@ -1,35 +1,38 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
-import { Item } from './item.model';
-import { v4 as uuid } from 'uuid';
+import { Item } from 'src/entities/item.entity';
+import { ItemRepository } from './item.repository';
 @Injectable()
 export class ItemsService {
+  constructor(private readonly itemRepository: ItemRepository) {}
+
   private items: Item[] = [];
-  findAll() {
-    return this.items;
+
+  async findAll() {
+    return await this.itemRepository.find();
   }
 
-  findById(id: string): Item {
-    const item = this.items.find((i) => i.id === id);
+  async findById(id: string) {
+    const item = await this.itemRepository.findOne(id);
     if (!item) {
       throw new NotFoundException();
     }
     return item;
   }
 
-  create(dto: CreateItemDto): Item {
-    const item: Item = { ...dto, status: 'ON_SALE', id: uuid() };
-    this.items.push(item);
-    return item;
+  async create(dto: CreateItemDto) {
+    return await this.itemRepository.createItem(dto);
   }
 
-  updateStatus(id: string): Item {
-    const item = this.findById(id);
+  async updateStatus(id: string) {
+    const item = await this.findById(id);
     item.status = 'SOLD_OUT';
+    this.itemRepository.save(item);
     return item;
   }
 
   delete(id: string) {
-    this.items = this.items.filter((item) => item.id !== id);
+    this.itemRepository.delete(id);
+    return id;
   }
 }
