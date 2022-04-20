@@ -1,5 +1,11 @@
 import { TItemStatus } from 'src/items/item.model';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Item {
@@ -18,9 +24,9 @@ export class Item {
   @Column()
   status: TItemStatus;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: string;
 
-  @Column()
+  @UpdateDateColumn()
   updatedAt: string;
 }

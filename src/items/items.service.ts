@@ -27,8 +27,8 @@ export class ItemsService {
   async updateStatus(id: string) {
     const item = await this.findById(id);
     item.status = 'SOLD_OUT';
-    this.itemRepository.save(item);
-    return item;
+    const newItem = await this.itemRepository.save(item);
+    return newItem;
   }
 
   delete(id: string) {

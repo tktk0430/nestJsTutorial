@@ -11,8 +11,6 @@ export class ItemRepository extends Repository<Item> {
       price,
       description,
       status: 'ON_SALE',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
     });
 
     await this.save(item);
