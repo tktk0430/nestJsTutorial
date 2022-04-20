@@ -13,13 +13,4 @@
     "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
     },
-    "editor.lineNumbers": "on",
-    "editor.rulers": [
-        80
-    ],
-    "eslint.packageManager": "npm",
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true,
-    "npm.packageManager": "yarn",
-    "typescript.enablePromptUseWorkspaceTsdk": true
 }
