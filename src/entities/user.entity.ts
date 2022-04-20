@@ -12,6 +12,6 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ default: UserStatus.FREE })
   userStatus: UserStatus;
 }
