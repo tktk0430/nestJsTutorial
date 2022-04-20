@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseUUIDPipe,
   Patch,
   Post,
 } from '@nestjs/common';
@@ -20,7 +19,7 @@ export class ItemsController {
   }
 
   @Get(':id')
-  async retrieve(@Param('id', ParseUUIDPipe) id: string) {
+  async retrieve(@Param('id') id: string) {
     return await this.itemService.findById(id);
   }
 
@@ -30,13 +29,13 @@ export class ItemsController {
   }
 
   @Patch(':id')
-  updateStatus(@Param('id', ParseUUIDPipe) id: string) {
+  updateStatus(@Param('id') id: string) {
     const item = this.itemService.updateStatus(id);
     return item;
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseUUIDPipe) id: string) {
+  delete(@Param('id') id: string) {
     this.itemService.delete(id);
   }
 }

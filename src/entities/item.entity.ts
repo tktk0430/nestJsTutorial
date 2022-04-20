@@ -9,7 +9,7 @@ import {
 
 @Entity()
 export class Item {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('increment')
   id: string;
 
   @Column()
