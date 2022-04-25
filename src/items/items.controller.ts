@@ -8,7 +8,9 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { User } from 'src/entities/user.entity';
 import { CreateItemDto } from './dto/create-item.dto';
 import { ItemsService } from './items.service';
 
@@ -27,7 +29,7 @@ export class ItemsController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  async create(@Body() dto: CreateItemDto) {
+  async create(@Body() dto: CreateItemDto, @GetUser() user: User) {
     return await this.itemService.create(dto);
   }
 
