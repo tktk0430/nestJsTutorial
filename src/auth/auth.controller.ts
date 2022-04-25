@@ -10,7 +10,7 @@ export class AuthController {
     return this.authService.getUsers();
   }
 
-  @Post()
+  @Post('signup')
   createUser(@Body() dto: CreateUserDto) {
     const user = this.authService.createUser(dto);
     return user;
