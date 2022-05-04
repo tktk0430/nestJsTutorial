@@ -3,10 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Category } from './category.entity';
 import { User } from './user.entity';
 
 @Entity()
@@ -37,4 +40,8 @@ export class Item {
 
   @Column({ nullable: true })
   userId: string;
+
+  @ManyToMany(() => Category)
+  @JoinTable()
+  categories: Category[];
 }
