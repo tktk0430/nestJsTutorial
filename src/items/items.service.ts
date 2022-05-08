@@ -24,7 +24,7 @@ export class ItemsService {
 
   async create(dto: CreateItemDto, user: User) {
     return await this.prisma.item.create({
-      data: { ...dto, status: 'ON_SALE', userId: user.id },
+      data: { ...dto, status: 'ON_SALE', user: { create: { ...user } } },
     });
   }
 

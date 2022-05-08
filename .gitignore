@@ -39,3 +39,6 @@ docker/*
 
 # idea
 *.idea.*
+
+# env
+.env
