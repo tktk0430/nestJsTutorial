@@ -3,22 +3,19 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { User } from '@prisma/client';
+import { PrismaService } from 'src/prisma';
 import { CreateItemDto } from './dto/create-item.dto';
-import { Item } from 'src/entities/item.entity';
-import { ItemRepository } from './item.repository';
-import { User } from 'src/entities/user.entity';
 @Injectable()
 export class ItemsService {
-  constructor(private readonly itemRepository: ItemRepository) {}
-
-  private items: Item[] = [];
+  constructor(private prisma: PrismaService) {}
 
   async findAll() {
-    return await this.itemRepository.find();
+    return await this.prisma.item.findMany();
   }
 
-  async findById(id: string) {
-    const item = await this.itemRepository.findOne(id);
+  async findById(id: number) {
+    const item = await this.prisma.item.findFirst({ where: { id } });
     if (!item) {
       throw new NotFoundException();
     }
@@ -26,25 +23,30 @@ export class ItemsService {
   }
 
   async create(dto: CreateItemDto, user: User) {
-    return await this.itemRepository.createItem(dto, user);
+    return await this.prisma.item.create({
+      data: { ...dto, status: 'ON_SALE', userId: user.id },
+    });
   }
 
-  async updateStatus(id: string, user: User) {
-    const item = await this.findById(id);
+  async updateStatus(id: number, user: User) {
+    const item = await this.prisma.item.findFirst({ where: { id } });
     if (item.userId === user.id) {
       throw new BadRequestException('自身の商品を購入することはできません');
     }
     item.status = 'SOLD_OUT';
-    const newItem = await this.itemRepository.save(item);
+    const newItem = await this.prisma.item.update({
+      where: { id },
+      data: item,
+    });
     return newItem;
   }
 
-  async delete(id: string, user: User) {
-    const item = await this.findById(id);
+  async delete(id: number, user: User) {
+    const item = await this.prisma.item.findFirst({ where: { id } });
     if (item.userId !== user.id) {
       throw new BadRequestException('他人の商品を削除することはできません');
     }
-    await this.itemRepository.delete(id);
+    await this.prisma.item.delete({ where: { id } });
     return id;
   }
 }
