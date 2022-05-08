@@ -4,12 +4,14 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { CredentialsDto } from './dto/credentials.dto';
 import { UserRepository } from './user.repository';
 import * as bcrypt from 'bcrypt';
+import { PrismaService } from 'src/prisma';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
     private jwtService: JwtService,
+    private prismaService: PrismaService,
   ) {}
 
   async getUsers() {
