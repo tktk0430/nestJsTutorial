@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { ItemStatus, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma';
 import { CreateItemDto } from './dto/create-item.dto';
 @Injectable()
@@ -24,7 +24,11 @@ export class ItemsService {
 
   async create(dto: CreateItemDto, user: User) {
     return await this.prisma.item.create({
-      data: { ...dto, status: 'ON_SALE', user: { create: { ...user } } },
+      data: {
+        ...dto,
+        status: ItemStatus.ON_SALE,
+        user: { connect: { id: user.id } },
+      },
     });
   }
 
@@ -33,7 +37,7 @@ export class ItemsService {
     if (item.userId === user.id) {
       throw new BadRequestException('自身の商品を購入することはできません');
     }
-    item.status = 'SOLD_OUT';
+    item.status = ItemStatus.SOLD_OUT;
     const newItem = await this.prisma.item.update({
       where: { id },
       data: item,

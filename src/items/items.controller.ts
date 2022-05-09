@@ -11,12 +11,11 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { User, UserStatus } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { Role } from 'src/auth/decorator/role.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RoleGuard } from 'src/auth/guards/roles.guard';
-import { UserStatus } from 'src/auth/user-status.enum';
 import { CreateItemDto } from './dto/create-item.dto';
 import { ItemsService } from './items.service';
 

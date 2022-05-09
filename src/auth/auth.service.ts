@@ -4,7 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { CredentialsDto } from './dto/credentials.dto';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/prisma';
-import { Prisma } from '@prisma/client';
+import { Prisma, UserStatus } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +25,7 @@ export class AuthService {
       Prisma.UserScalarFieldEnum,
     ).reduce((obj, x) => Object.assign(obj, { [x]: x !== 'password' }), {});
     const user = await this.prismaService.user.create({
-      data: { ...dto, password: hashedPassword, userStatus: 'FREE' },
+      data: { ...dto, password: hashedPassword, userStatus: UserStatus.FREE },
       select: withoutPasswordSelect,
     });
     return user;
