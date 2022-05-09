@@ -11,23 +11,24 @@ model Category {
     id                Int                @id(map: "PK_9c4e4a89e3674fc9f382d733f03") @default(autoincrement())
     name              String             @db.VarChar
     itemsToCategories ItemToCategories[]
-
-    @@map("category")
 }
 
 model Item {
     name              String             @db.VarChar
     price             Int
     description       String             @db.VarChar
-    status            String             @db.VarChar
+    status            ItemStatus
     createdAt         DateTime           @default(now()) @db.Timestamp(6)
     updatedAt         DateTime           @default(now()) @db.Timestamp(6)
     id                Int                @id(map: "PK_d3c0c71f23e7adcf952a1d13423") @default(autoincrement())
     userId            Int?
     user              User?              @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_5369db3bd33839fd3b0dd5525d1")
     itemsToCategories ItemToCategories[]
+}
 
-    @@map("item")
+enum ItemStatus {
+    ON_SALE
+    SOLD_OUT
 }
 
 model ItemToCategories {
@@ -36,19 +37,20 @@ model ItemToCategories {
     category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, map: "FK_cbcba68e69901ab873ec441a7b6")
     item       Item     @relation(fields: [itemId], references: [id], onDelete: Cascade, map: "FK_32e0f47e48497fc3647e82c4ee5")
 
-
     @@id([itemId, categoryId], map: "PK_f5125ad13291eb883608b794cb9")
     @@index([itemId], map: "IDX_32e0f47e48497fc3647e82c4ee")
     @@index([categoryId], map: "IDX_cbcba68e69901ab873ec441a7b")
-    @@map("item_categories_category")
 }
 
 model User {
-    id         Int    @id(map: "PK_cace4a159ff9f2512dd42373760") @default(autoincrement())
-    username   String @unique(map: "UQ_78a916df40e02a9deb1c4b75edb") @db.VarChar
-    password   String @db.VarChar
-    userStatus String @default("FREE") @db.VarChar
+    id         Int        @id(map: "PK_cace4a159ff9f2512dd42373760") @default(autoincrement())
+    username   String     @unique(map: "UQ_78a916df40e02a9deb1c4b75edb") @db.VarChar
+    password   String     @db.VarChar
+    userStatus UserStatus @default(FREE)
     item       Item[]
+}
 
-    @@map("user")
+enum UserStatus {
+    FREE
+    PREMIUM
 }
